@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // This code was used from Brackeys https://www.youtube.com/watch?v=4HpC--2iowE
 // Code was also used from ZeveonHD https://www.youtube.com/watch?v=D2LqcIxAQpY&t=65s
@@ -45,24 +46,28 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard == null) return;
+
+        // Getting user input for movement.
+        float horizontal = (keyboard.dKey.isPressed ? 1f : 0f) - (keyboard.aKey.isPressed ? 1f : 0f);
+        float vertical = (keyboard.wKey.isPressed ? 1f : 0f) - (keyboard.sKey.isPressed ? 1f : 0f);
+
         if (!disabled)
         {
-            PlayerEnabled();
+            PlayerEnabled(horizontal, vertical, keyboard);
         }
 
         // Check if the character is idle or moving
-        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1 || Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1)
+        if (horizontal != 0f || vertical != 0f)
         {
             playerAnim.SetBool("Walk", true);
             playerAnim.SetBool("Idle", false);
         }
         else
         {
-            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 0)
-            {
-                playerAnim.SetBool("Idle", true);
-                playerAnim.SetBool("Walk", false);
-            }
+            playerAnim.SetBool("Idle", true);
+            playerAnim.SetBool("Walk", false);
         }
 
         if (isCaught)
@@ -83,7 +88,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    void PlayerEnabled()
+    void PlayerEnabled(float horizontal, float vertical, Keyboard keyboard)
     {
         // Checks if the player is touching the ground or not.
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -93,9 +98,6 @@ public class CharacterMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        // Getting user input for movement.
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (direction.magnitude >= 0.1f)
@@ -132,13 +134,13 @@ public class CharacterMovement : MonoBehaviour
 
         /*
         // The player can jump with the space bar.
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (keyboard.spaceKey.wasPressedThisFrame && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
         // Checks if the player is sprinting or not (Left Shift to sprint)
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (keyboard.leftShiftKey.isPressed)
         {
             isSprinting = true;
         }
@@ -149,7 +151,7 @@ public class CharacterMovement : MonoBehaviour
         }*/
 
         // Checks if the player is crouching or not (Left CTRL to crouch)
-        if (Input.GetKey(KeyCode.LeftShift) && !isCaught)
+        if (keyboard.leftShiftKey.isPressed && !isCaught)
         {
             isCrouching = true;
             playerAnim.SetBool("Crouching", true);

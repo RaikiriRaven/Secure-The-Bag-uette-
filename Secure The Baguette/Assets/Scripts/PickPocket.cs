@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PickPocket : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class PickPocket : MonoBehaviour
                 }
             }
 
-            if (Vector3.Distance(transform.position, player.transform.position) <= distance && Input.GetKeyDown(KeyCode.E) && !playerObstructed)
+            if (Vector3.Distance(transform.position, player.transform.position) <= distance && Keyboard.current.eKey.wasPressedThisFrame && !playerObstructed)
             {
                 playerAudio.PlayOneShot(pickPocketSound, 1);
                 Instantiate(key, player.transform.position, player.transform.rotation);

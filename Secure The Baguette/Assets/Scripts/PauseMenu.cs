@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 // This script was used from Hooson https://www.youtube.com/watch?v=tfzwyNS1LUY&t=54s
 
@@ -23,7 +24,7 @@ public class PauseMenu : MonoBehaviour
         // Presses the Escape key to pause the game.
         if (pauseMenuActive == false)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 pauseMenuActive = true;
                 Pause();
@@ -32,7 +33,7 @@ public class PauseMenu : MonoBehaviour
 
         else if (pauseMenuActive == true)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 pauseMenuActive = false;
                 Resume();
