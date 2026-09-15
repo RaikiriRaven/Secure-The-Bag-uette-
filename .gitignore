@@ -1,6 +1,32 @@
 # ignore git config as it will be differ across clients
 .gitconfig
 
+# =========================================================================
+# CRITICAL MISSING UNITY 6+ UPDATES 
+# =========================================================================
+.utmp/                        # Essential for Unity 6 Android builds (prevents lock conflicts)
+/[Uu]ser[Ss]ettings/          # Local editor layouts/preferences (stops team merge conflicts)
+/[Mm]emoryCaptures/           # Memory profiler snapshots (massive binary files)
+/[Rr]ecordings/               # Unity Recorder outputs (videos/image sequences)
+
+# =========================================================================
+# MISSING MODERN IDE ARTIFACTS
+# =========================================================================
+.vscode/                      # VS Code local settings
+.vsconfig                     # Visual Studio installer configurations
+
+# =========================================================================
+# MISSING ART & EXTERNAL TOOL BACKUPS
+# =========================================================================
+*.blend1                      # Blender auto-saves (commonly committed by accident)
+*.blend2
+*.bbmodel                     # Blockbench models
+*.bak                         # Generic backups
+
+# =========================================================================
+# YOUR ORIGINAL CONFIGURATION (Preserved)
+# =========================================================================
+
 # unity generated folders
 library/
 temp/
@@ -32,7 +58,6 @@ Build.meta
 Builds.meta
 Logs.meta
 Bin.meta
-
 
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
